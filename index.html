@@ -1,61 +1,112 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Student Marks</title>
-  <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/9.5.1/css/dx.common.css" />
-  <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/9.5.1/css/dx.light.css" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-  <div class="dx-viewport">
-    <div class="container">
-      <h1>Student Marks</h1>
-      <div id="input-section">
-        <div id="num-students-container" class="dx-field">
-          <div class="dx-field-label">Enter number of students:</div>
-          <div class="dx-field-value">
-            <div id="num-students"></div>
-          </div>
-        </div>
-        <div id="num-subjects-container" class="dx-field">
-          <div class="dx-field-label">Enter number of subjects:</div>
-          <div class="dx-field-value">
-            <div id="num-subjects"></div>
-          </div>
-        </div>
-        <div class="dx-field">
-          <div class="dx-field-value">
-            <div id="submit-btn"></div>
-          </div>
-        </div>
+  <header>
+    <h1>Student Marks</h1>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <h2>Enter Details</h2>
+      <div class="form-group">
+        <label for="num-students">Number of students:</label>
+        <input type="number" id="num-students" min="1" />
       </div>
-
-      <div id="data-section" style="display: none;">
-        <h2>Enter Subject Names</h2>
-        <div id="subject-names"></div>
-
-        <h2>Enter Student Details</h2>
-        <div id="students"></div>
-
-        <div class="dx-field">
-          <div class="dx-field-value">
-            <div id="calculate-btn"></div>
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="num-subjects">Number of subjects:</label>
+        <input type="number" id="num-subjects" min="1" />
       </div>
-
-      <div id="result-section" style="display: none;">
-        <h2>Final Marks for All Students</h2>
-        <div id="student-marks"></div>
+      <div class="button-container">
+        <button id="submit-btn">Submit</button>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <script src="https://cdn3.devexpress.com/jslib/9.5.1/js/dx.all.js"></script>
+    <section id="data-section" style="display: none;">
+      <h2>Enter Subject Names and Weights</h2>
+      <div id="subject-inputs"></div>
+
+      <h2>Enter Student Marks</h2>
+      <div id="student-inputs"></div>
+
+      <div class="button-container">
+        <button id="calculate-btn">Calculate</button>
+      </div>
+    </section>
+
+    <section id="result-section" style="display: none;">
+      <h2>Class Rankings</h2>
+      <div id="rankings-container"></div>
+    </section>
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student Marks</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.1.4/css/dx.common.css">
+  <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/21.1.4/css/dx.light.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div id="header-container">
+      <h1>Student Marks</h1>
+    </div>
+  </header>
+
+  <div id="main-container">
+    <div id="auth-container">
+      <h2>Login</h2>
+      <div id="auth-form"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div id="footer-container">
+      <p>&copy; 2022 Student Marks. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn3.devexpress.com/jslib/21.1.4/js/jquery.min.js"></script>
+  <script src="https://cdn3.devexpress.com/jslib/21.1.4/js/dx.all.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html> -->
 
 
 
