@@ -1,73 +1,288 @@
-const numStudents = new DevExpress.ui.dxNumberBox("#num-students", {
-  min: 1,
-  onValueChanged: function (e) {
-    createStudentInputs(e.value, numSubjects.option("value"));
+document.addEventListener("DOMContentLoaded", function() {
+  const inputSection = document.getElementById("input-section");
+  const dataSection = document.getElementById("data-section");
+  const resultSection = document.getElementById("result-section");
+  const numStudentsInput = document.getElementById("num-students");
+  const numSubjectsInput = document.getElementById("num-subjects");
+  const submitBtn = document.getElementById("submit-btn");
+  const calculateBtn = document.getElementById("calculate-btn");
+  const subjectInputsContainer = document.getElementById("subject-inputs");
+  const studentInputsContainer = document.getElementById("student-inputs");
+  const rankingsContainer = document.getElementById("rankings-container");
+
+  let numStudents = 0;
+  let numSubjects = 0;
+  let subjectInputs = [];
+  let studentInputs = [];
+
+  submitBtn.addEventListener("click", function() {
+    numStudents = parseInt(numStudentsInput.value);
+    numSubjects = parseInt(numSubjectsInput.value);
+
+    subjectInputsContainer.innerHTML = "";
+    studentInputsContainer.innerHTML = "";
+
+    for (let i = 0; i < numSubjects; i++) {
+      const subjectDiv = document.createElement("div");
+      subjectDiv.classList.add("form-group");
+
+      const nameLabel = document.createElement("label");
+      nameLabel.textContent = `Subject ${i + 1} Name:`;
+      subjectDiv.appendChild(nameLabel);
+
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      subjectDiv.appendChild(nameInput);
+
+      const weightLabel = document.createElement("label");
+      weightLabel.textContent = "Weight:";
+      subjectDiv.appendChild(weightLabel);
+
+      const weightInput = document.createElement("input");
+      weightInput.type = "number";
+      weightInput.min = 1;
+      weightInput.value = 1;
+      subjectDiv.appendChild(weightInput);
+
+      subjectInputs.push({
+        nameInput,
+        weightInput
+      });
+
+      subjectInputsContainer.appendChild(subjectDiv);
+    }
+
+    for (let i = 0; i < numStudents; i++) {
+      const studentDiv = document.createElement("div");
+      studentDiv.classList.add("form-group");
+
+      const nameLabel = document.createElement("label");
+      nameLabel.textContent = `Student ${i + 1} Name:`;
+      studentDiv.appendChild(nameLabel);
+
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      studentDiv.appendChild(nameInput);
+
+      const marksLabel = document.createElement("label");
+      marksLabel.textContent = "Marks:";
+      studentDiv.appendChild(marksLabel);
+
+      const marksContainer = document.createElement("div");
+      marksContainer.classList.add("marks-container");
+
+      for (let j = 0; j < numSubjects; j++) {
+        const marksInput = document.createElement("input");
+        marksInput.type = "number";
+        marksInput.min = 0;
+        marksInput.max = 20;
+        marksContainer.appendChild(marksInput);
+      }
+
+      studentInputs.push({
+        nameInput,
+        marksContainer
+      });
+
+      studentDiv.appendChild(marksContainer);
+
+      studentInputsContainer.appendChild(studentDiv);
+    }
+
+    inputSection.style.display = "none";
+    dataSection.style.display = "block";
+  });
+
+  calculateBtn.addEventListener("click", function() {
+    const subjects = [];
+    const students = [];
+
+    for (let i = 0; i < numSubjects; i++) {
+      const subjectName = subjectInputs[i].nameInput.value.trim();
+      const weight = parseInt(subjectInputs[i].weightInput.value);
+
+      if (subjectName !== "") {
+        subjects.push({
+          name: subjectName,
+          weight: weight
+        });
+      }
+    }
+
+    for (let i = 0; i < numStudents; i++) {
+      const studentName = studentInputs[i].nameInput.value.trim();
+      const marksInputs = studentInputs[i].marksContainer.getElementsByTagName("input");
+      const marks = [];
+
+      for (let j = 0; j < numSubjects; j++) {
+        marks.push(parseInt(marksInputs[j].value));
+      }
+
+      if (studentName !== "" && marks.length === numSubjects) {
+        students.push({
+          name: studentName,
+          marks: marks
+        });
+      }
+    }
+
+    const rankings = calculateRankings(subjects, students);
+
+    displayRankings(rankings);
+
+    dataSection.style.display = "none";
+    resultSection.style.display = "block";
+  });
+
+  function calculateRankings(subjects, students) {
+    let rankings = [];
+
+    students.forEach((student) => {
+      let totalMarks = 0;
+
+      for (let i = 0; i < subjects.length; i++) {
+        totalMarks += student.marks[i] * subjects[i].weight;
+      }
+
+      const grade = Math.round((totalMarks / (20 * getTotalWeight(subjects))) * 100);
+
+      rankings.push({
+        name: student.name,
+        grade: grade
+      });
+    });
+
+    rankings.sort((a, b) => b.grade - a.grade);
+
+    return rankings;
+  }
+
+  function getTotalWeight(subjects) {
+    let totalWeight = 0;
+
+    subjects.forEach((subject) => {
+      totalWeight += subject.weight;
+    });
+
+    return totalWeight;
+  }
+
+  function displayRankings(rankings) {
+    rankingsContainer.innerHTML = "";
+
+    for (let i = 0; i < rankings.length; i++) {
+      const student = rankings[i];
+
+      const studentCard = document.createElement("div");
+      studentCard.classList.add("student-card");
+
+      if (i === 0) {
+        studentCard.classList.add("gold");
+      } else if (i === 1) {
+        studentCard.classList.add("silver");
+      } else if (i === 2) {
+        studentCard.classList.add("bronze");
+      }
+
+      const nameHeading = document.createElement("h3");
+      nameHeading.textContent = student.name;
+      studentCard.appendChild(nameHeading);
+
+      const gradeElement = document.createElement("p");
+      gradeElement.textContent = `Grade: ${student.grade}%`;
+      studentCard.appendChild(gradeElement);
+
+      rankingsContainer.appendChild(studentCard);
+    }
   }
 });
 
-const numSubjects = new DevExpress.ui.dxNumberBox("#num-subjects", {
-  min: 1,
-  onValueChanged: function (e) {
-    createSubjectInput(e.value);
-    createStudentInputs(numStudents.option("value"), e.value);
-  }
-});
 
-const submitBtn = new DevExpress.ui.dxButton("#submit-btn", {
-  text: "Submit",
-  onClick: function () {
-    const inputSection = document.getElementById('input-section');
-    const dataSection = document.getElementById('data-section');
 
-    inputSection.style.display = 'none';
-    dataSection.style.display = 'block';
-  }
-});
 
-const calculateBtn = new DevExpress.ui.dxButton("#calculate-btn", {
-  text: "Calculate",
-  onClick: function () {
-    const students = getStudentData();
-    displayStudentMarks(students);
 
-    const dataSection = document.getElementById('data-section');
-    const resultSection = document.getElementById('result-section');
 
-    dataSection.style.display = 'none';
-    resultSection.style.display = 'block';
-  }
-});
 
-function createSubjectInput(numSubjects) {
-  const subjectNamesDiv = document.getElementById('subject-names');
-  subjectNamesDiv.innerHTML = '';
 
-  for (let i = 0; i < numSubjects; i++) {
-    const subjectNameTextbox = new DevExpress.ui.dxTextBox(document.createElement('div'), {
-      placeholder: `Enter Subject ${i + 1} Name`,
-      elementAttr: { 'class': 'dx-field-value' }
-    }).element();
 
-    subjectNamesDiv.appendChild(subjectNameTextbox);
-  }
-}
 
-function createStudentInputs(numStudents, numSubjects) {
-  const studentsDiv = document.getElementById('students');
-  studentsDiv.innerHTML = '';
 
-  for (let i = 0; i < numStudents; i++) {
-    const studentDiv = document.createElement('div');
-    studentDiv.setAttribute('class', 'dx-field student');
 
-    const nameTextbox = new DevExpress.ui.dxTextBox(document.createElement('div'), {
-      placeholder: `Enter Student ${i + 1} Name (max 20 characters)`,
-      elementAttr: { 'class': 'dx-field-value' }
-    }).element();
 
-    studentDiv.appendChild(nameTextbox);
-  }
-}
+
+
+
+
+// const numStudents = new DevExpress.ui.dxNumberBox("#num-students", {
+//   min: 1,
+//   onValueChanged: function (e) {
+//     createStudentInputs(e.value, numSubjects.option("value"));
+//   }
+// });
+
+// const numSubjects = new DevExpress.ui.dxNumberBox("#num-subjects", {
+//   min: 1,
+//   onValueChanged: function (e) {
+//     createSubjectInput(e.value);
+//     createStudentInputs(numStudents.option("value"), e.value);
+//   }
+// });
+
+// const submitBtn = new DevExpress.ui.dxButton("#submit-btn", {
+//   text: "Submit",
+//   onClick: function () {
+//     const inputSection = document.getElementById('input-section');
+//     const dataSection = document.getElementById('data-section');
+
+//     inputSection.style.display = 'none';
+//     dataSection.style.display = 'block';
+//   }
+// });
+
+// const calculateBtn = new DevExpress.ui.dxButton("#calculate-btn", {
+//   text: "Calculate",
+//   onClick: function () {
+//     const students = getStudentData();
+//     displayStudentMarks(students);
+
+//     const dataSection = document.getElementById('data-section');
+//     const resultSection = document.getElementById('result-section');
+
+//     dataSection.style.display = 'none';
+//     resultSection.style.display = 'block';
+//   }
+// });
+
+// function createSubjectInput(numSubjects) {
+//   const subjectNamesDiv = document.getElementById('subject-names');
+//   subjectNamesDiv.innerHTML = '';
+
+//   for (let i = 0; i < numSubjects; i++) {
+//     const subjectNameTextbox = new DevExpress.ui.dxTextBox(document.createElement('div'), {
+//       placeholder: `Enter Subject ${i + 1} Name`,
+//       elementAttr: { 'class': 'dx-field-value' }
+//     }).element();
+
+//     subjectNamesDiv.appendChild(subjectNameTextbox);
+//   }
+// }
+
+// function createStudentInputs(numStudents, numSubjects) {
+//   const studentsDiv = document.getElementById('students');
+//   studentsDiv.innerHTML = '';
+
+//   for (let i = 0; i < numStudents; i++) {
+//     const studentDiv = document.createElement('div');
+//     studentDiv.setAttribute('class', 'dx-field student');
+
+//     const nameTextbox = new DevExpress.ui.dxTextBox(document.createElement('div'), {
+//       placeholder: `Enter Student ${i + 1} Name (max 20 characters)`,
+//       elementAttr: { 'class': 'dx-field-value' }
+//     }).element();
+
+//     studentDiv.appendChild(nameTextbox);
+//   }
+// }
 
 
 
