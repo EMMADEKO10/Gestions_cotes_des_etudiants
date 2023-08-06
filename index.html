@@ -1,6 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Notes des étudiants</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Notes des étudiants</h1>
+  </header>
+
+  <main>
+    <section id="input-section">
+      <h2>Entrez les détails</h2>
+      <div class="form-group">
+        <label for="num-students">Nombre d'étudiants :</label>
+        <input type="number" id="num-students" min="1" />
+      </div>
+      <div class="form-group">
+        <label for="num-subjects">Nombre de matières :</label>
+        <input type="number" id="num-subjects" min="1" />
+      </div>
+      <div class="button-container">
+        <button id="submit-btn">Soumettre</button>
+      </div>
+    </section>
+
+    <section id="data-section" style="display: none;">
+      <h2>Entrez les noms des matières et les coefficients</h2>
+      <div id="subject-inputs"></div>
+
+      <h2>Entrez les notes des étudiants</h2>
+      <div id="student-inputs"></div>
+
+      <div class="button-container">
+        <button id="calculate-btn">Calculer</button>
+      </div>
+    </section>
+
+    <section id="result-section" style="display: none;">
+      <h2>Classement de la classe</h2>
+      <div id="rankings-container"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
   <title>Student Marks</title>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -45,7 +100,7 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+</html> -->
 
 
 
