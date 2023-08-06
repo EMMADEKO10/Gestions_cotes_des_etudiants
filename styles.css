@@ -1,4 +1,106 @@
-body {
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  input[type="number"],
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .data-section {
+    display: none;
+  }
+  
+  .marks-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .mark-input {
+    width: 50px;
+    text-align: center;
+  }
+  
+  .result-section {
+    display: none;
+  }
+  
+  .student-card {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .gold {
+    background-color: gold;
+  }
+  
+  .silver {
+    background-color: silver;
+  }
+  
+  .bronze {
+    background-color: sandybrown;
+  }
+  
+  .grade {
+    font-weight: bold;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .marks-container {
+      flex-wrap: wrap;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+/* body {
     margin: 0;
     font-family: Arial, sans-serif;
   }
@@ -93,7 +195,7 @@ body {
   
   .bronze {
     border: 2px solid #CD7F32;
-  }
+  } */
 
 
 
